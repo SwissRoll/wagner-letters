@@ -1,0 +1,42 @@
+name: Generate PDF List
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Generate pdf_list.json
+      run: |
+        import os
+        import json
+        
+        pdf_folder = 'letters'
+        pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith('.pdf')]
+        
+        pdf_list = {"pdfs": pdf_files}
+        
+        with open('pdf_list.json', 'w') as json_file:
+            json.dump(pdf_list, json_file, indent=4)
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add pdf_list.json
+        git commit -m 'Update pdf_list.json'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
