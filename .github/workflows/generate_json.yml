@@ -19,17 +19,7 @@ jobs:
         python-version: '3.x'
 
     - name: Generate pdf_list.json
-      run: |
-        import os
-        import json
-        
-        pdf_folder = 'letters'
-        pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith('.pdf')]
-        
-        pdf_list = {"pdfs": pdf_files}
-        
-        with open('pdf_list.json', 'w') as json_file:
-            json.dump(pdf_list, json_file, indent=4)
+      run: python scripts/generate_pdf_list.py
 
     - name: Commit and push changes
       run: |
