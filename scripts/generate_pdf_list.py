@@ -5,7 +5,7 @@ import json
 pdf_folder = 'letters'
 
 # Get list of PDF files
-pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith('.pdf')]
+pdf_files = sorted([f for f in os.listdir(pdf_folder) if f.endswith('.pdf')])
 
 # Create a dictionary to hold the PDF list
 pdf_list = {"pdfs": pdf_files}
