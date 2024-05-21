@@ -3,7 +3,7 @@ name: Generate PDF List
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
