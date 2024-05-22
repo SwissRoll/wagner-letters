@@ -7,54 +7,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Wagner Letters</h1>
-        <ul id="pdf-list"></ul>
+    <div>
+      <label for="filter">Filter by:</label>
+      <select id="filter" onchange="applyFilter()">
+        <option value="all">All</option>
+      </select>
     </div>
+    <ul id="pdf-list"></ul>
+    <div id="pagination"></div>
 
-    <script>
-        let currentPage = 1;
-        let loading = false;
-
-        // Function to fetch and append PDFs to the list
-        function fetchAndAppendPDFs() {
-          loading = true;
-          fetch(`pdf_list_${currentPage}.json`) // Load JSON data for each page
-            .then(response => response.json())
-            .then(data => {
-              const pdfList = document.getElementById('pdf-list');
-              data.pdfs.forEach(file => {
-                const listItem = document.createElement('li');
-                listItem.classList.add('pdf-list-item');
-                const link = document.createElement('a');
-                link.href = `letters/${file}`;
-                link.textContent = file;
-                link.target = "_blank"; // Opens the PDF in a new tab
-                listItem.appendChild(link);
-                pdfList.appendChild(listItem);
-              });
-              currentPage++; // Increment current page number for next fetch
-              loading = false;
-            })
-            .catch(error => {
-              console.error('Error fetching the PDF list:', error);
-              loading = false;
-            });
-        }
-
-        // Function to handle scroll events
-        function handleScroll() {
-          const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-          if (scrollTop + clientHeight >= scrollHeight - 5 && !loading) { // Load more PDFs when near bottom of page
-            fetchAndAppendPDFs();
-          }
-        }
-
-        // Attach scroll event listener to document
-        document.addEventListener("scroll", handleScroll);
-
-        // Fetch and append PDFs when DOM content is loaded
-        document.addEventListener("DOMContentLoaded", fetchAndAppendPDFs);
-      </script>
-</body>
+    <script src="list_pdfs.js"></script>
+  </body>
 </html>
