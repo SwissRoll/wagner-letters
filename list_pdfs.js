@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pdfListElement = document.getElementById('pdf-list');
     const paginationElement = document.getElementById('pagination');
     const filterElement = document.getElementById('filter');
-    const itemsPerPage = 25;
+    const itemsPerPage = getItemsPerPage();
     let currentPage = 1;
     let pdfData = [];
     let filteredData = [];
@@ -26,6 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
         renderPage();
       });
     
+    window.addEventListener('resize', () => {
+      itemsPerPage = getItemsPerPage();
+      renderPage();
+    });
+
+    function getItemsPerPage() {
+      return window.innerWidth <= 600 ? 10 : 25;
+    }
 
     function populateFilterOptions(data) {
       const years = new Set();
@@ -75,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       paginatedData.forEach(file => {
         const listItem = document.createElement('li');
+        listItem.classList.add('pdf-list-item');
         const link = document.createElement('a');
         link.href = `letters/${file}`;
         link.textContent = file;
